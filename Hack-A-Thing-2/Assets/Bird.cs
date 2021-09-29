@@ -12,15 +12,22 @@ public class Bird : MonoBehaviour
     // allow launch power changes
     [SerializeField] private float _launchPower = 250;
 
+
     // record bird start position
     private void Awake()
     {
         _initialPosition = transform.position;
+        GetComponent<LineRenderer>().enabled = false;
     }
 
     // reset bird if necessary
     private void Update()
     {   
+
+        // get line/arrow renderer
+        GetComponent<LineRenderer>().SetPosition(1,_initialPosition);
+        GetComponent<LineRenderer>().SetPosition(0,transform.position);
+
 
         // reset bird when it exits the stage
         if (transform.position.y > 10 ||
@@ -51,7 +58,11 @@ public class Bird : MonoBehaviour
     // runs every time I click on the bird
     private void OnMouseDown()
     {
+        // change bird color
         GetComponent<SpriteRenderer>().color = Color.red;
+
+        // render arrows to start position
+        GetComponent<LineRenderer>().enabled = true;
     }
 
     // run when we release mouse on bird
@@ -65,6 +76,9 @@ public class Bird : MonoBehaviour
         GetComponent<Rigidbody2D>().gravityScale = 1;
 
         _birdWasLaunched = true;
+
+        // stop rendering arrows
+        GetComponent<LineRenderer>().enabled = false;
     }
 
     // when dragging bird
